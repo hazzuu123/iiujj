@@ -35,10 +35,19 @@ const Login = () => {
             console.log('로그인 요청 성공: ', response.data)
             // 응답 코드에 따라 메세지 출력 및 로그인 폼 초기화
             if (response.data.code === 1000) {
+                // 로그인에 성공할 시
                 setLoginError(false)
                 // 로그인 폼 초기화
                 setUsername('')
                 setPassword('')
+
+
+                const accessToken = response.data.result.replace('Bearer ', '');
+                // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+                // accessToken을 axios.defaults.headers.common에 저장하지만, 보안상의 이유로 브라우저 내장 저장소(localStorage, cookie)에는 저장하지 않는 것이 중요하다.
+
             } else if (response.data.code === 3201) {
                 setLoginError(true)
                 setErrorMessage(response.data.message)
