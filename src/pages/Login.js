@@ -1,10 +1,12 @@
 import { useRef, useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"; // useNavigate import
 import axios from "axios"
-
 import styles from './Login.module.css'
 
 /** Login 컴포넌트 */
 const Login = () => {
+    const navigate = useNavigate();
+
     const inputRef = useRef(null)
     const [username, setUsername] = useState('')  // 사용자 아이디
     const [password, setPassword] = useState('')  //비밀번호
@@ -44,7 +46,16 @@ const Login = () => {
 
                 const accessToken = response.data.result.replace('Bearer ', '');
                 // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+                const expiresIn = 60; // 토큰의 만료 시간(1시간)
+                const expirationTime = new Date().getTime() + expiresIn * 1000;
+
+                // localStorage에 토큰과 토큰 만료시간을 저장 
+                localStorage.setItem('token', `Bearer ${accessToken}`);
+                localStorage.setItem('tokenExpiration', expirationTime);
+
+
+                navigate('/', { replace: true }); // home화면으로 이동하며, 이전의 히스토리 스택이 모두 사라지게 됩니다.
+
 
                 // accessToken을 axios.defaults.headers.common에 저장하지만, 보안상의 이유로 브라우저 내장 저장소(localStorage, cookie)에는 저장하지 않는 것이 중요하다.
 
@@ -75,6 +86,30 @@ const Login = () => {
     const handleInputPassword = (event) => {
         setPassword(event.target.value)
     }
+
+
+
+
+    // 로그인 상태 확인 후 자동 로그아웃 처리
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const expiration = localStorage.getItem('tokenExpiration');
+
+        if (token && expiration) {
+            const currentTime = new Date().getTime();
+            if (currentTime > Number(expiration)) {
+                // 토큰 만료 시 자동 로그아웃
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenExpiration');
+                navigate('/login', { replace: true }); // 로그인 페이지로 이동
+            } else {
+                // 중복로그인을 피하기 위해, 토큰 유효한 경우 로그인 페이지로 이동하지 않음
+                navigate('/', { replace: true });
+            }
+        }
+    }, []);
+
+
     return (
         <div className="App">
             <form onSubmit={handleLogin}>
