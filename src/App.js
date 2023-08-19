@@ -6,6 +6,7 @@ import SignUpFlow from './pages/SignUpFlow';
 import Map from './pages/Map/Map';
 import Post from './pages/Post/Post';
 import PostGetAll from './pages/Post/PostGetAll';
+import GetLocation from './GetLocation';
 
 
 
@@ -17,7 +18,9 @@ function App() {
       <Route path='/signup' element={<SignUpFlow></SignUpFlow>} />
       <Route path='/map' element={<Map></Map>} />
       <Route path='/post' element={<Post></Post>} />
-      <Route path='/post/getall' element={<PostGetAll></PostGetAll>} />
+      <Route path='/post/getAll' element={<PostGetAll></PostGetAll>} />
+      <Route path='/getLocation' element={<GetLocation></GetLocation>} />
+
     </Routes>
 
 
