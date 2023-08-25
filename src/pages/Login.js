@@ -46,7 +46,7 @@ const Login = () => {
 
                 const accessToken = response.data.result.replace('Bearer ', '');
                 // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                const expiresIn = 60; // 토큰의 만료 시간(1시간)
+                const expiresIn = 60 * 1; // 토큰의 만료 시간(1시간)
                 const expirationTime = new Date().getTime() + expiresIn * 1000;
 
                 // localStorage에 토큰과 토큰 만료시간을 저장 
@@ -57,7 +57,7 @@ const Login = () => {
                 navigate('/', { replace: true }); // home화면으로 이동하며, 이전의 히스토리 스택이 모두 사라지게 됩니다.
 
 
-                // accessToken을 axios.defaults.headers.common에 저장하지만, 보안상의 이유로 브라우저 내장 저장소(localStorage, cookie)에는 저장하지 않는 것이 중요하다.
+
 
             } else if (response.data.code === 3201) {
                 setLoginError(true)

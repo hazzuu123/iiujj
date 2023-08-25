@@ -7,8 +7,7 @@ import Map from './pages/Map/Map';
 import Post from './pages/Post/Post';
 import PostGetAll from './pages/Post/PostGetAll';
 import GetLocation from './GetLocation';
-
-
+import ClickStarRating from './components/StartRating';
 
 function App() {
   return (
@@ -20,6 +19,7 @@ function App() {
       <Route path='/post' element={<Post></Post>} />
       <Route path='/post/getAll' element={<PostGetAll></PostGetAll>} />
       <Route path='/getLocation' element={<GetLocation></GetLocation>} />
+      <Route path='/starRating' element={<ClickStarRating></ClickStarRating>} />
 
     </Routes>
 
